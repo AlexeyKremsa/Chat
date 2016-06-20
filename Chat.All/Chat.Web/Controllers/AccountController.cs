@@ -147,7 +147,7 @@ namespace Chat.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterUserModel model)
         {
             if (ModelState.IsValid)
             {
