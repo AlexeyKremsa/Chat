@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Chat.Web.Models
+namespace Chat.Infrastructure.ViewModels
 {
     public class RegisterUserModel
     {

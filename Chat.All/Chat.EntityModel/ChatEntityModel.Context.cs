@@ -13,10 +13,10 @@ namespace Chat.EntityModel
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ChatEntities : DbContext
+    public partial class ChatDbContext : DbContext
     {
-        public ChatEntities()
-            : base("name=ChatEntities")
+        public ChatDbContext()
+            : base("name=ChatDbContext")
         {
         }
     
@@ -25,6 +25,6 @@ namespace Chat.EntityModel
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

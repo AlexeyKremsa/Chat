@@ -1,4 +1,4 @@
-﻿using Chat.Web.Models;
+﻿using Chat.Infrastructure.ViewModels;
 
 namespace Chat.Services.Interfaces
 {

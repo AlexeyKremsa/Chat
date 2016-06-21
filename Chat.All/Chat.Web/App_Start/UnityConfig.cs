@@ -1,6 +1,14 @@
 using System;
+using System.Data.Entity;
+using System.Linq;
+using AutoMapper;
 using Chat.Domain.Repositories.Implementations;
 using Chat.Domain.Repositories.Interfaces;
+using Chat.Services.Security;
+using Chat.Web.Controllers;
+using Chat.Web.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Practices.Unity;
 
 namespace Chat.Web.App_Start
@@ -16,6 +24,7 @@ namespace Chat.Web.App_Start
             var container = new UnityContainer();
             RegisterService(container);
             RegisterDomain(container);
+            RegisterMapper(container);
             return container;
         });
 
@@ -28,15 +37,41 @@ namespace Chat.Web.App_Start
         }
         #endregion
 
-        public static void RegisterService(IUnityContainer container)
+        private static void RegisterService(IUnityContainer container)
         {
+            container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
+            container.RegisterType<UserManager<ApplicationUser>>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
 
+            container.RegisterType<AccountController>(new InjectionConstructor());
+            container.RegisterType<IPasswordHelper, PasswordHelper>();
         }
 
 
-        public static void RegisterDomain(IUnityContainer container)
+        private static void RegisterDomain(IUnityContainer container)
         {
             container.RegisterType<IUserRepository, UserRepository>();
+        }
+
+        private static void RegisterMapper(IUnityContainer container)
+        {
+            var profiles =
+                typeof(UnityConfig).Assembly
+                .GetTypes()
+                .Where(x => typeof(Profile).IsAssignableFrom(x))
+                .Select(x => (Profile)Activator.CreateInstance(x))
+                .ToArray();
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                foreach (var profile in profiles)
+                {
+                    cfg.AddProfile(profile);
+                }
+            });
+
+            container.RegisterInstance(config);
+            container.RegisterInstance(config.CreateMapper());
         }
     }
 }

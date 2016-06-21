@@ -62,4 +62,7 @@
   <ItemGroup>
     <Build Include="Tables\User.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Chat.Database.refactorlog" />
+  </ItemGroup>
 </Project>
