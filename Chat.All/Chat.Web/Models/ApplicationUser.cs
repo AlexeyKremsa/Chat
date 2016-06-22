@@ -9,7 +9,7 @@ namespace Chat.Web.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string PasswordSalt { get; set; }
+        public new string Email { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

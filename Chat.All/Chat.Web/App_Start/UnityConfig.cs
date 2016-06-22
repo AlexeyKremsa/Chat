@@ -1,14 +1,18 @@
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Web;
 using AutoMapper;
 using Chat.Domain.Repositories.Implementations;
 using Chat.Domain.Repositories.Interfaces;
+using Chat.Services.Implementations;
+using Chat.Services.Interfaces;
 using Chat.Services.Security;
 using Chat.Web.Controllers;
 using Chat.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
 using Microsoft.Practices.Unity;
 
 namespace Chat.Web.App_Start
@@ -25,6 +29,7 @@ namespace Chat.Web.App_Start
             RegisterService(container);
             RegisterDomain(container);
             RegisterMapper(container);
+            RegisterIdentityClasses(container);
             return container;
         });
 
@@ -37,14 +42,26 @@ namespace Chat.Web.App_Start
         }
         #endregion
 
-        private static void RegisterService(IUnityContainer container)
+        private static void RegisterIdentityClasses(IUnityContainer container)
         {
             container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
-            container.RegisterType<UserManager<ApplicationUser>>(new HierarchicalLifetimeManager());
-            container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
 
-            container.RegisterType<AccountController>(new InjectionConstructor());
+            //container.RegisterType<UserManager<ApplicationUser>>();
+            container.RegisterType<ApplicationUserManager>();
+            container.RegisterType<ApplicationSignInManager>();
+            container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
+            container.RegisterType<IUserStore<ApplicationUser>, ApplicationUserStore<ApplicationUser>>();
+            //container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
+           
+            
+            
+            //container.RegisterType<AccountController>(new InjectionConstructor());
+        }
+
+        private static void RegisterService(IUnityContainer container)
+        {
             container.RegisterType<IPasswordHelper, PasswordHelper>();
+            container.RegisterType<IUserService, UserService>();
         }
 
 

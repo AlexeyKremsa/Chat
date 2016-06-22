@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using Chat.Services.Interfaces;
+using Chat.Web.App_Start;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -14,24 +16,6 @@ using Chat.Web.Models;
 
 namespace Chat.Web
 {
-    public class EmailService : IIdentityMessageService
-    {
-        public Task SendAsync(IdentityMessage message)
-        {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
-        }
-    }
-
-    public class SmsService : IIdentityMessageService
-    {
-        public Task SendAsync(IdentityMessage message)
-        {
-            // Plug in your SMS service here to send a text message.
-            return Task.FromResult(0);
-        }
-    }
-
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
@@ -54,36 +38,17 @@ namespace Chat.Web
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireUppercase = false,
             };
 
             // Configure user lockout defaults
-            manager.UserLockoutEnabledByDefault = true;
-            manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            manager.MaxFailedAccessAttemptsBeforeLockout = 5;
+            //manager.UserLockoutEnabledByDefault = true;
+            //manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            //manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
-            // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
-            // You can write your own provider and plug it in here.
-            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
-            {
-                MessageFormat = "Your security code is {0}"
-            });
-            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
-            {
-                Subject = "Security Code",
-                BodyFormat = "Your security code is {0}"
-            });
-            manager.EmailService = new EmailService();
-            manager.SmsService = new SmsService();
-            var dataProtectionProvider = options.DataProtectionProvider;
-            if (dataProtectionProvider != null)
-            {
-                manager.UserTokenProvider = 
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
-            }
             return manager;
         }
     }
@@ -91,9 +56,12 @@ namespace Chat.Web
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {
-        public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
+        private readonly IUserService _userService;
+
+        public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager, IUserService userService)
             : base(userManager, authenticationManager)
         {
+            _userService = userService;
         }
 
         public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
@@ -101,9 +69,55 @@ namespace Chat.Web
             return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
         }
 
-        public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
+        public override async Task<SignInStatus> PasswordSignInAsync(string email, string password, bool isPersistent, bool shouldLockout)
         {
-            return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+            if (_userService.ValidateUser(email, password))
+            {
+                var user = new ApplicationUser()
+                {
+                    Email = email,
+                    UserName = email
+                };
+
+                await SignInAsync(user, isPersistent, false);
+
+                return SignInStatus.Success;
+            }
+
+            return SignInStatus.Failure;
+        }
+    }
+
+    public class ApplicationUserStore<TUser> : IUserStore<TUser> where TUser : ApplicationUser
+    {
+        public void Dispose()
+        {
+            
+        }
+
+        public Task CreateAsync(TUser user)
+        {
+            return new Task(() => { });
+        }
+
+        public Task UpdateAsync(TUser user)
+        {
+            return new Task(() => { });
+        }
+
+        public Task DeleteAsync(TUser user)
+        {
+            return new Task(() => { });
+        }
+
+        public Task<TUser> FindByIdAsync(string userId)
+        {
+            return new Task<TUser>(() => null);
+        }
+
+        public Task<TUser> FindByNameAsync(string userName)
+        {
+            return new Task<TUser>(() => null);
         }
     }
 }

@@ -36,5 +36,17 @@ namespace Chat.Services.Implementations
 
             return _userRepository.AddUser(newUser);
         }
+
+        public bool ValidateUser(string email, string password)
+        {
+            var user = _userRepository.GetUserByEmail(email);
+
+            if (user != null)
+            {
+                return _passwordHelper.IsPasswordValid(user, password);
+            }
+
+            return false;
+        }
     }
 }

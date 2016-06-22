@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.greeting {
+    color: #ffffff;
+    position: relative;
+    padding-top: 15px;
+}
