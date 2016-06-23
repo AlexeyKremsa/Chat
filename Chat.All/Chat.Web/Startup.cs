@@ -9,6 +9,7 @@ namespace Chat.Web
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            ConfigureSignalR(app);
         }
     }
 }

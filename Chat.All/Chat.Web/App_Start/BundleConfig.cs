@@ -23,6 +23,9 @@ namespace Chat.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/Scripts/jtmpl")
+                .Include("~/Scripts/jQuery.tmpl.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

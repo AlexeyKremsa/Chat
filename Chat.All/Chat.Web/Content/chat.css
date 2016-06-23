@@ -1,0 +1,5 @@
+﻿.msg-list {
+    height: 500px;
+    overflow: scroll;
+    overflow-x: hidden;
+}

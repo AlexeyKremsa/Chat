@@ -1,4 +1,5 @@
-﻿using Chat.Infrastructure.ViewModels;
+﻿using Chat.Infrastructure.Dto;
+using Chat.Infrastructure.ViewModels;
 
 namespace Chat.Services.Interfaces
 {
@@ -6,5 +7,6 @@ namespace Chat.Services.Interfaces
     {
         int RegisterUser(RegisterUserModel userModel);
         bool ValidateUser(string email, string password);
+        UserDto GetUserByEmail(string email);
     }
 }

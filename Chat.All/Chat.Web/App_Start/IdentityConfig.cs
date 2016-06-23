@@ -8,9 +8,7 @@ using System.Web;
 using Chat.Services.Interfaces;
 using Chat.Web.App_Start;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Chat.Web.Models;
 
@@ -22,20 +20,14 @@ namespace Chat.Web
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
         {
-        }
-
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
-        {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
-            // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            UserValidator = new UserValidator<ApplicationUser>(this)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
 
             // Configure validation logic for passwords
-            manager.PasswordValidator = new PasswordValidator
+            PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
                 RequireNonLetterOrDigit = false,
@@ -43,13 +35,41 @@ namespace Chat.Web
                 RequireLowercase = false,
                 RequireUppercase = false,
             };
+        }
+        
+        //public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        //{
+        //    var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<DbContext>()));
+        //    // Configure validation logic for usernames
+        //    manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+        //    {
+        //        AllowOnlyAlphanumericUserNames = false,
+        //        RequireUniqueEmail = true
+        //    };
 
-            // Configure user lockout defaults
-            //manager.UserLockoutEnabledByDefault = true;
-            //manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            //manager.MaxFailedAccessAttemptsBeforeLockout = 5;
+        //    // Configure validation logic for passwords
+        //    manager.PasswordValidator = new PasswordValidator
+        //    {
+        //        RequiredLength = 6,
+        //        RequireNonLetterOrDigit = false,
+        //        RequireDigit = false,
+        //        RequireLowercase = false,
+        //        RequireUppercase = false,
+        //    };
 
-            return manager;
+        //    // Configure user lockout defaults
+        //    //manager.UserLockoutEnabledByDefault = true;
+        //    //manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
+        //    //manager.MaxFailedAccessAttemptsBeforeLockout = 5;
+
+        //    return manager;
+        //}
+
+        public override Task<IdentityResult> CreateAsync(ApplicationUser user)
+        {
+            Store.CreateAsync(user).Wait();
+
+            return base.CreateAsync(user);
         }
     }
 
@@ -75,7 +95,6 @@ namespace Chat.Web
             {
                 var user = new ApplicationUser()
                 {
-                    Email = email,
                     UserName = email
                 };
 

@@ -8,14 +8,12 @@ using Chat.Domain.Repositories.Interfaces;
 using Chat.Services.Implementations;
 using Chat.Services.Interfaces;
 using Chat.Services.Security;
-using Chat.Web.Controllers;
 using Chat.Web.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Practices.Unity;
 
-namespace Chat.Web.App_Start
+namespace Chat.Web
 {
     /// <summary>
     /// Specifies the Unity configuration for the main container.
@@ -50,7 +48,7 @@ namespace Chat.Web.App_Start
             container.RegisterType<ApplicationUserManager>();
             container.RegisterType<ApplicationSignInManager>();
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
-            container.RegisterType<IUserStore<ApplicationUser>, ApplicationUserStore<ApplicationUser>>();
+            container.RegisterType<IUserStore<ApplicationUser>, ApplicationUserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
             //container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
            
             
@@ -62,6 +60,7 @@ namespace Chat.Web.App_Start
         {
             container.RegisterType<IPasswordHelper, PasswordHelper>();
             container.RegisterType<IUserService, UserService>();
+            //container.RegisterType<ChatHub>();
         }
 
 
