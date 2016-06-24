@@ -11,10 +11,10 @@ namespace Chat.Web.Controllers
         // GET: Chat
         public ActionResult Index()
         {
-            var a = HttpContext.User.Identity.Name;
             return View(new ChatViewModel()
             {
-                Email = User.Identity.Name
+                Email = CurrentUser.Email,
+                UserName = CurrentUser.FirstName
             });
         }
     }

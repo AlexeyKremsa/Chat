@@ -17,7 +17,6 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
 select,
 textarea {
     max-width: 280px;
@@ -27,4 +26,21 @@ textarea {
     color: #ffffff;
     position: relative;
     padding-top: 15px;
+}
+
+input.form-control {
+    width: 300px;
+}
+
+.msg-list {
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.msg-user-name {
+    width: 20%;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

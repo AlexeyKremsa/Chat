@@ -74,7 +74,6 @@
                 <ul class="media-list">
                     <li class="media">
                         <div class="media-body">
-
                             <div class="media">
                                 <p class="pull-left">
                                     User Name
@@ -85,7 +84,6 @@
                                     <small class="text-muted">Active From 3 hours</small>
                                 </div>
                             </div>
-
                         </div>
                     </li>
                 </ul>
@@ -98,7 +96,7 @@
         <li class="media">
             <div class="media-body">
                 <div class="media">
-                    <p class="pull-left" href="#">
+                    <p class="pull-left msg-user-name" href="#">
                         ${userName}
                     </p>
                     <div class="media-body">
@@ -112,29 +110,6 @@
             </div>
         </li>
     </script>
-    @*<div id="divContainer">
-
-            <div id="divChat" class="chatRoom">
-                <div class="title">
-                    Welcome to Chat Room [<span id='spanUser'></span>]
-                </div>
-
-                <div class="content">
-                    <div id="divChatWindow" class="chatWindow">
-                    </div>
-                    <div id="divusers" class="users">
-                    </div>
-                </div>
-
-                <div class="messageBar">
-                    <input class="textbox" type="text" id="txtMessage" />
-                    <input id="btnSendMsg" type="button" value="Send" class="submitButton" />
-                </div>
-            </div>
-
-            <input id="hdId" type="hidden" />
-            <input id="hdUserName" type="hidden" />
-        </div>*@
 </div>
 
 
@@ -151,10 +126,10 @@
         // Start Hub
         $.connection.hub.start().done(function () {
             registerEvents(chatHub);
-            chatHub.server.connect('Alex');
+
+            var userNameEmail = '@Model.UserName'.concat(' ').concat('(@Model.Email)');
+            chatHub.server.connect(userNameEmail);
         });
-
-
 
         function registerClientMethods(chatHub) {
 
@@ -206,7 +181,7 @@
             $("#msg-tmpl").tmpl({
                 userName: userName,
                 text: message,
-                date: new Date().toLocaleString()
+                time: new Date().toLocaleString()
             }).prependTo(".msg-list");
             $("#msgText").val('');
         }
