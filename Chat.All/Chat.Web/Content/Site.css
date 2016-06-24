@@ -44,3 +44,23 @@ input.form-control {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.modal {
+    overflow: hidden;
+}
+
+.modal-dialog {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.private-msg-list {
+    height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.draggable-modal {
+    z-index: 1;
+    position: absolute !important;
+}
