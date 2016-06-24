@@ -18,7 +18,7 @@
     SignalR Chat Room
 </div>
 
-<input id="userId" type="hidden" />
+<input id="connectionId" type="hidden" />
 <input id="userName" type="hidden" />
 
 <div class="container">
@@ -71,18 +71,13 @@
                 ONLINE USERS
             </div>
             <div class="panel-body">
-                <ul class="media-list">
+                <ul class="media-list users-list">
                     <li class="media">
                         <div class="media-body">
                             <div class="media">
-                                <p class="pull-left">
-                                    User Name
-                                </p>
-                                <div class="media-body">
-                                    <h5>Alex Deo | User </h5>
-
-                                    <small class="text-muted">Active From 3 hours</small>
-                                </div>
+                                <a class="pull-left" title="aaaa">
+                                    Alex Deo
+                                </a>
                             </div>
                         </div>
                     </li>
@@ -101,12 +96,36 @@
                     </p>
                     <div class="media-body">
                         ${text}
-                        <br />
+                        <br/>
                         <small class="text-muted">${time}</small>
-                        <hr />
+                        <hr/>
                     </div>
                 </div>
 
+            </div>
+        </li>
+    </script>
+
+    <script id="user-tmpl" type="text/x-jquery-tmpl">
+        <li class="media" id='${id}'>
+            <div class="media-body">
+                <div class="media">
+                    <a class="pull-left" title="Click to start private chat">
+                        ${userName}
+                    </a>
+                </div>
+            </div>
+        </li>
+    </script>
+
+    <script id="current-user-tmpl" type="text/x-jquery-tmpl">
+        <li class="media">
+            <div class="media-body">
+                <div class="media">
+                    <p class="pull-left" style="color:navy">
+                        ${userName}
+                    </p>
+                </div>
             </div>
         </li>
     </script>
@@ -123,11 +142,12 @@
 
         registerClientMethods(chatHub);
 
+        var userNameEmail = '@Model.UserName'.concat(' ').concat('(@Model.Email)');
+
         // Start Hub
         $.connection.hub.start().done(function () {
             registerEvents(chatHub);
 
-            var userNameEmail = '@Model.UserName'.concat(' ').concat('(@Model.Email)');
             chatHub.server.connect(userNameEmail);
         });
 
@@ -136,13 +156,13 @@
             // Calls when user successfully logged in
             chatHub.client.onConnected = function (id, userName, allUsers, messages) {
 
-                $('#userId').val(id);
+                $('#connectionId').val(id);
                 $('#userName').val(userName);
 
                 // Add All Users
                 for (i = 0; i < allUsers.length; i++) {
 
-                    //AddUser(chatHub, allUsers[i].ConnectionId, allUsers[i].UserName);
+                    AddUser(chatHub, allUsers[i].ConnectionId, allUsers[i].UserName);
                 }
 
                 // Add Existing Messages
@@ -156,12 +176,36 @@
 
                 AddMessage(userName, message);
             }
+
+            chatHub.client.onNewUserConnected = function (id, name) {
+
+                AddUser(chatHub, id, name);
+
+                $("#msg-tmpl").tmpl({
+                    userName: "Info:",
+                    text: name.concat(' ').concat('joined the chat.'),
+                    time: new Date().toLocaleString()
+                }).css('color', 'rgb(232, 193, 164)').prependTo(".msg-list");
+            }
+
+            chatHub.client.onUserDisconnected = function (id, userName) {
+
+                $('#' + id).remove();
+
+                var ctrId = 'private_' + id;
+                $('#' + ctrId).remove();
+
+                $("#msg-tmpl").tmpl({
+                    userName: "Info:",
+                    text: userName.concat(' ').concat('logged off.'),
+                    time: new Date().toLocaleString()
+                }).css('color', 'rgb(232, 193, 164)').prependTo(".msg-list");
+            }
         }
 
         function registerEvents(chatHub) {
 
             $('#btnSendMsg').click(function () {
-
                 var msg = $("#msgText").val();
                 if (msg.length > 0) {
                     var userName = $('#userName').val();
@@ -184,6 +228,24 @@
                 time: new Date().toLocaleString()
             }).prependTo(".msg-list");
             $("#msgText").val('');
+        }
+
+        function AddUser(chatHub, id, name) {
+            
+            var connectionId = $('#connectionId').val();
+            
+            if (connectionId === id) {
+                $("#current-user-tmpl").tmpl({
+                    userName: name
+                }).prependTo(".users-list");
+            }
+
+            else {
+                $("#user-tmpl").tmpl({
+                    userName: name,
+                    id: id
+                }).prependTo(".users-list");
+            }
         }
 
     });

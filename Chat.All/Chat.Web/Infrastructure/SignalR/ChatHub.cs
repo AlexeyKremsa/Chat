@@ -51,19 +51,18 @@ namespace Chat.Web.Infrastructure.SignalR
                 // send to caller user
                 Clients.Caller.sendPrivateMessage(toUserId, fromUser.UserName, message); 
             }
-
         }
 
         public override Task OnDisconnected(bool stopCalled)
         {
             var item = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+
             if (item != null)
             {
                 ConnectedUsers.Remove(item);
 
                 var id = Context.ConnectionId;
                 Clients.All.onUserDisconnected(id, item.UserName);
-
             }
 
             return base.OnDisconnected(stopCalled);
@@ -76,7 +75,9 @@ namespace Chat.Web.Infrastructure.SignalR
             CurrentMessage.Add(new MessageDetail { UserName = userName, Message = message });
 
             if (CurrentMessage.Count > 100)
+            {
                 CurrentMessage.RemoveAt(0);
+            }
         }
 
         #endregion

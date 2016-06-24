@@ -7,7 +7,6 @@ namespace Chat.Web.Controllers
     [Authorize]
     public class ChatController : BaseController
     {
-
         // GET: Chat
         public ActionResult Index()
         {
