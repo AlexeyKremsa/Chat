@@ -7,13 +7,23 @@ namespace Chat.Web.Controllers
     [Authorize]
     public class ChatController : BaseController
     {
-        // GET: Chat
+        [HttpGet]
         public ActionResult Index()
         {
             return View(new ChatViewModel()
             {
                 Email = CurrentUser.Email,
                 UserName = CurrentUser.FirstName
+            });
+        }
+
+        [HttpGet]
+        public ActionResult PrivateDialogTemplate(string windowId, string userName)
+        {
+            return PartialView("PrivateDialogTemplate", new PrivateDialogTemplateModel()
+            {
+                WindowId = windowId,
+                UserName = userName
             });
         }
     }

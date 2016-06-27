@@ -73,15 +73,6 @@
             </div>
             <div class="panel-body">
                 <ul class="media-list users-list">
-                    <li class="media">
-                        <div class="media-body">
-                            <div class="media">
-                                <a class="pull-left" title="aaaa">
-                                    Alex Deo
-                                </a>
-                            </div>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -108,7 +99,7 @@
     </script>
 
     <script id="user-tmpl" type="text/x-jquery-tmpl">
-        <li class="media">
+        <li class="media" id='li_${id}'>
             <div class="media-body">
                 <div class="media">
                     <a class="pull-left send-private-msg" title="Click to start private chat" id='${id}'>
@@ -131,51 +122,6 @@
         </li>
     </script>
 
-    <script id="private-modal-tmpl" type="text/x-jquery-tmpl">
-
-        <div class="col-md-3 ui-widget-content draggable-modal" id="${modalId}">
-            <div class="panel panel-info">
-                <div class="panel-heading header">
-                    RECENT CHAT HISTORY
-
-                    <button type="button" class="close private-close">&times;</button>
-                </div>
-
-                <ul class="media-list private-msg-list">
-                    <li class="media">
-                        <div class="media-body">
-                            <div class="media">
-                                <p class="pull-left" href="#">
-                                    User Name
-                                </p>
-                                <div class="media-body">
-                                    Donec sit amet ligula enim. Duis vel condimentum massa.
-
-                                    Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim.
-                                    Duis vel condimentum massa.
-                                    Donec sit amet ligula enim. Duis vel condimentum massa.
-                                    <br />
-                                    <small class="text-muted">Alex Deo | 23rd June at 5:00pm</small>
-                                    <hr />
-                                </div>
-                            </div>
-
-                        </div>
-                    </li>
-                </ul>
-
-                <div class="panel-footer">
-                    <div class="input-group">
-                        <input type="text" id="msgText" class="form-control" placeholder="Enter Message" />
-                        <span class="input-group-btn">
-                            <button id="btnSendMsg" class="btn btn-info" type="button">SEND</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </script>
 </div>
 
 
@@ -239,6 +185,9 @@
 
                 $('#' + id).remove();
 
+                var parentLi = 'li_'.concat(id);
+                $('#'.concat(parentLi)).remove();
+
                 var ctrId = 'private_' + id;
                 $('#' + ctrId).remove();
 
@@ -249,14 +198,14 @@
                 }).css('color', 'rgb(232, 193, 164)').prependTo(".msg-list");
             }
 
-            chatHub.client.sendPrivateMessage = function (windowId, fromUserName, message) {
+            //chatHub.client.sendPrivateMessage = function (windowId, fromUserName, message) {
 
-                $("#private-modal-tmpl").tmpl({
-                    modalId: windowId,
-                    userName: 'аа'
-                });
+            //    $("#private-modal-tmpl").tmpl({
+            //        modalId: windowId,
+            //        userName: 'аа'
+            //    });
 
-            }
+            //}
         }
 
         function registerEvents(chatHub) {
@@ -279,7 +228,7 @@
             $(".users-list").on('click', '.send-private-msg', function () {
 
                 var id = $(this).attr('id');
-                var userName = $(this).text();                
+                var userName = $(this).text();
 
                 OpenPrivateChatWindow(chatHub, id, userName);
             });
@@ -302,9 +251,7 @@
                 $("#current-user-tmpl").tmpl({
                     userName: name
                 }).prependTo(".users-list");
-            }
-
-            else {
+            } else {
                 $("#user-tmpl").tmpl({
                     userName: name,
                     id: id
@@ -314,21 +261,27 @@
 
         function OpenPrivateChatWindow(chatHub, id, userName) {
 
-            var windowId = 'private_'.concat(id);        
-            
+            var windowId = 'private_'.concat(id);
+
             if ($('#'.concat(windowId)).length) {
                 return;
             }
 
-            $("#private-modal-tmpl").tmpl({
-                modalId: windowId,
-                userName: userName
-            }).draggable({
-                handle: ".header"
-            }).prependTo("#private-msg-container");
+            $.ajax({
+                url: '@Url.Action("PrivateDialogTemplate", "Chat")',
+                data: { windowId: windowId, userName: userName },
+                type: "GET",
+                success: function (result) {
+                    $("#private-msg-container").append(result);
 
-            $('.private-close').on('click', function() {
-                $($('#'.concat(windowId))).remove();
+                    $('#'.concat(windowId)).draggable({
+                        handle: ".header"
+                    });
+
+                    $('.private-close').on('click', function () {
+                        $('#'.concat(windowId)).remove();
+                    });
+                }
             });
         }
 

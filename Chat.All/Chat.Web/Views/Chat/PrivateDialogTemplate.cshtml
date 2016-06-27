@@ -1,0 +1,21 @@
+﻿@model Chat.Infrastructure.ViewModels.PrivateDialogTemplateModel
+
+<div class="col-md-3 ui-widget-content draggable-modal" id="@Model.WindowId">
+    <div class="panel panel-info">
+        <div class="panel-heading header">
+            PRIVAT CHAT HISTORY: @Model.UserName
+            <button type="button" class="close private-close">&times;</button>
+        </div>
+
+        <ul class="media-list private-msg-list"></ul>
+
+        <div class="panel-footer">
+            <div class="input-group">
+                <input type="text" id="msgText" class="form-control" placeholder="Enter Message" />
+                <span class="input-group-btn">
+                    <button id="btnSendPrivateMsg" class="btn btn-info" type="button">SEND</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
