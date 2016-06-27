@@ -32,26 +32,6 @@
             </div>
 
             <ul class="media-list msg-list">
-                <li class="media">
-                    <div class="media-body">
-                        <div class="media">
-                            <p class="pull-left" href="#">
-                                User Name
-                            </p>
-                            <div class="media-body">
-                                Donec sit amet ligula enim. Duis vel condimentum massa.
-
-                                Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim.
-                                Duis vel condimentum massa.
-                                Donec sit amet ligula enim. Duis vel condimentum massa.
-                                <br />
-                                <small class="text-muted">Alex Deo | 23rd June at 5:00pm</small>
-                                <hr />
-                            </div>
-                        </div>
-
-                    </div>
-                </li>
             </ul>
 
             <div class="panel-footer">
@@ -76,7 +56,6 @@
                 </ul>
             </div>
         </div>
-
     </div>
 
     <script id="msg-tmpl" type="text/x-jquery-tmpl">
@@ -198,14 +177,22 @@
                 }).css('color', 'rgb(232, 193, 164)').prependTo(".msg-list");
             }
 
-            //chatHub.client.sendPrivateMessage = function (windowId, fromUserName, message) {
+            chatHub.client.sendPrivateMessage = function (windowId, fromUserName, message) {
 
-            //    $("#private-modal-tmpl").tmpl({
-            //        modalId: windowId,
-            //        userName: 'аа'
-            //    });
+                var privateWindowId = 'private_'.concat(windowId);
 
-            //}
+                if ($('#'.concat(privateWindowId)).length === 0) {
+                    OpenPrivateChatWindow(chatHub, windowId, fromUserName);
+                }
+
+                var privateMsgList = $('#'.concat(privateWindowId)).find('.private-msg-list');
+
+                $("#msg-tmpl").tmpl({
+                    userName: fromUserName,
+                    text: message,
+                    time: new Date().toLocaleString()
+                }).prependTo(privateMsgList);
+            }
         }
 
         function registerEvents(chatHub) {
@@ -271,6 +258,8 @@
                 url: '@Url.Action("PrivateDialogTemplate", "Chat")',
                 data: { windowId: windowId, userName: userName },
                 type: "GET",
+                async: false,
+                cahse: false,
                 success: function (result) {
                     $("#private-msg-container").append(result);
 
@@ -280,6 +269,22 @@
 
                     $('.private-close').on('click', function () {
                         $('#'.concat(windowId)).remove();
+                    });
+
+                    $('.btn-send-private').on('click', function () {
+                        var $input = $(this).parent().parent().children('input');
+                        var msg = $input.val();
+
+                        if (msg.length > 0) {
+                            chatHub.server.sendPrivateMessage(id, msg);
+                            $input.val('');
+                        }
+                    });
+
+                    $('.private-msg-text').on('keyup', function (e) {
+                        if (e.which === 13) {
+                            $(this).parent().find('.btn-send-private').click();
+                        }
                     });
                 }
             });

@@ -37,7 +37,6 @@ namespace Chat.Web.Infrastructure.SignalR
 
         public void SendPrivateMessage(string toUserId, string message)
         {
-
             string fromUserId = Context.ConnectionId;
 
             var toUser = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == toUserId) ;
