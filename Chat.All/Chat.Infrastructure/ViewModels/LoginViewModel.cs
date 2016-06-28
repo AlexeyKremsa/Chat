@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Chat.Infrastructure.AccountViewModels
+namespace Chat.Infrastructure.ViewModels
 {
     public class LoginViewModel
     {
