@@ -8,6 +8,7 @@ using Chat.Domain.Repositories.Interfaces;
 using Chat.Services.Implementations;
 using Chat.Services.Interfaces;
 using Chat.Services.Security;
+using Chat.Web.Infrastructure.SignalR;
 using Chat.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -44,23 +45,17 @@ namespace Chat.Web
         {
             container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
 
-            //container.RegisterType<UserManager<ApplicationUser>>();
             container.RegisterType<ApplicationUserManager>();
             container.RegisterType<ApplicationSignInManager>();
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
             container.RegisterType<IUserStore<ApplicationUser>, ApplicationUserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
-            //container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
-           
-            
-            
-            //container.RegisterType<AccountController>(new InjectionConstructor());
         }
 
         private static void RegisterService(IUnityContainer container)
         {
             container.RegisterType<IPasswordHelper, PasswordHelper>();
             container.RegisterType<IUserService, UserService>();
-            //container.RegisterType<ChatHub>();
+            container.RegisterType<IChatPermission, ChatHub>();
         }
 
 

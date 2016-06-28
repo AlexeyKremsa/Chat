@@ -5,10 +5,17 @@ using Microsoft.AspNet.SignalR;
 
 namespace Chat.Web.Infrastructure.SignalR
 {
-    public class ChatHub : Hub
+    public class ChatHub : Hub, IChatPermission
     {
-        static List<UserDetail> ConnectedUsers = new List<UserDetail>();
-        static List<MessageDetail> CurrentMessage = new List<MessageDetail>();
+        private static List<UserDetail> ConnectedUsers = new List<UserDetail>();
+        private static List<MessageDetail> CurrentMessage = new List<MessageDetail>();
+
+        public bool CanUserJoinChat(string userName)
+        {
+            var user = ConnectedUsers.FirstOrDefault(x => x.UserName == userName);
+
+            return user == null;
+        }
 
         public void Connect(string userName)
         {
@@ -67,8 +74,6 @@ namespace Chat.Web.Infrastructure.SignalR
             return base.OnDisconnected(stopCalled);
         }
 
-        #region private Messages
-
         private void AddMessageinCache(string userName, string message)
         {
             CurrentMessage.Add(new MessageDetail { UserName = userName, Message = message });
@@ -78,7 +83,5 @@ namespace Chat.Web.Infrastructure.SignalR
                 CurrentMessage.RemoveAt(0);
             }
         }
-
-        #endregion
     }
 }

@@ -13,10 +13,6 @@
     <script src="@Url.Content("~/signalr/hubs")" type="text/javascript"></script>
 }
 
-<div id="header">
-    SignalR Chat Room
-</div>
-
 <input id="connectionId" type="hidden" />
 <input id="userName" type="hidden" />
 
@@ -114,13 +110,11 @@
 
         registerClientMethods(chatHub);
 
-        var userNameEmail = '@Model.UserName'.concat(' ').concat('(@Model.Email)');
-
         // Start Hub
         $.connection.hub.start().done(function () {
             registerEvents(chatHub);
 
-            chatHub.server.connect(userNameEmail);
+            chatHub.server.connect('@Model.UserNameEmail');
         });
 
         function registerClientMethods(chatHub) {

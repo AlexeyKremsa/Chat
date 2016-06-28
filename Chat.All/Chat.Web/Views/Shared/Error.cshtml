@@ -1,9 +1,18 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
+﻿@model string
 
 @{
     ViewBag.Title = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+@section ExtraStyles {
+    <style>
+        .validation-summary-errors {
+            color: red;
+            font-weight: bold;
+            font-size: 17px;
+            margin-top: 20px;
+        }
+    </style>
+}
 
+@Html.ValidationSummary()
