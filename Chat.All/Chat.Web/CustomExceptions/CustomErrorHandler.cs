@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Web.Mvc;
 using Chat.Web.Models;
+using log4net;
 
 namespace Chat.Web.CustomExceptions
 {
     public class CustomErrorHandler : HandleErrorAttribute
     {
+        private readonly ILog _log;
+
+        public CustomErrorHandler(ILog log)
+        {
+            _log = log;
+        }
+
         public override void OnException(ExceptionContext filterContext)
         {
             if (!filterContext.ExceptionHandled)
@@ -24,10 +32,9 @@ namespace Chat.Web.CustomExceptions
                     })
                 };
                 filterContext.ExceptionHandled = true;
-                //Log error  
-                //Logger.LogErrorMessage(ex.Message);
-                //do something with these details here  
-                
+
+                _log.Error(ex.Message);
+                _log.Error(ex.StackTrace);
             }
         }
     }

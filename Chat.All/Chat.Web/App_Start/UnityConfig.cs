@@ -10,6 +10,7 @@ using Chat.Services.Interfaces;
 using Chat.Services.Security;
 using Chat.Web.Infrastructure.SignalR;
 using Chat.Web.Models;
+using log4net;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Microsoft.Practices.Unity;
@@ -27,7 +28,7 @@ namespace Chat.Web
             var container = new UnityContainer();
             RegisterService(container);
             RegisterDomain(container);
-            RegisterMapper(container);
+            RegisterTools(container);
             RegisterIdentityClasses(container);
             return container;
         });
@@ -44,7 +45,6 @@ namespace Chat.Web
         private static void RegisterIdentityClasses(IUnityContainer container)
         {
             container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
-
             container.RegisterType<ApplicationUserManager>();
             container.RegisterType<ApplicationSignInManager>();
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
@@ -55,7 +55,6 @@ namespace Chat.Web
         {
             container.RegisterType<IPasswordHelper, PasswordHelper>();
             container.RegisterType<IUserService, UserService>();
-            container.RegisterType<IChatPermission, ChatHub>();
         }
 
 
@@ -64,7 +63,7 @@ namespace Chat.Web
             container.RegisterType<IUserRepository, UserRepository>();
         }
 
-        private static void RegisterMapper(IUnityContainer container)
+        private static void RegisterTools(IUnityContainer container)
         {
             var profiles =
                 typeof(UnityConfig).Assembly
@@ -83,6 +82,9 @@ namespace Chat.Web
 
             container.RegisterInstance(config);
             container.RegisterInstance(config.CreateMapper());
+
+            container.RegisterType<IChatPermission, ChatHub>();
+            container.RegisterInstance<ILog>(LogManager.GetLogger("ChatLogger"));
         }
     }
 }

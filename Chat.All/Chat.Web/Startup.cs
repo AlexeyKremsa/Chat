@@ -1,6 +1,7 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "Web.config", Watch = true)]   
 [assembly: OwinStartupAttribute(typeof(Chat.Web.Startup))]
 namespace Chat.Web
 {
