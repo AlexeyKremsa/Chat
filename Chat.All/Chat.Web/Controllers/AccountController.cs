@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Chat.Infrastructure.AccountViewModels;
@@ -67,6 +68,8 @@ namespace Chat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
+            throw new NullReferenceException();
+
             if (!ModelState.IsValid)
             {
                 return View(model);

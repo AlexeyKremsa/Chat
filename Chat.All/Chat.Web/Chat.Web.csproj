@@ -201,6 +201,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="CustomExceptions\CustomErrorHandler.cs" />
     <Compile Include="Infrastructure\BaseController.cs" />
     <Compile Include="Infrastructure\SignalR\ChatHub.cs" />
     <Compile Include="Infrastructure\SignalR\IChatPermission.cs" />
@@ -212,6 +213,7 @@
     </Compile>
     <Compile Include="MapperProfiles\ServiceProfile.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\CustomExceptionModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -220,6 +222,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\chat.css" />
+    <Content Include="Content\error.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -296,6 +299,7 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Chat\Index.cshtml" />
     <Content Include="Views\Chat\PrivateDialogTemplate.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

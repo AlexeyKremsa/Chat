@@ -1,18 +1,23 @@
-﻿@model string
+﻿@model Chat.Web.Models.CustomExceptionModel
 
 @{
     ViewBag.Title = "Error";
 }
 
 @section ExtraStyles {
-    <style>
-        .validation-summary-errors {
-            color: red;
-            font-weight: bold;
-            font-size: 17px;
-            margin-top: 20px;
-        }
-    </style>
+    <link href="@Url.Content("~/Content/error.css")" rel="stylesheet" />
 }
 
 @Html.ValidationSummary()
+
+An error occured :(
+
+<div class="custom-errors">
+    Controller: @Model.ControllerName
+    <br/>
+    Action: @Model.ActionName
+    <br />
+    Error: @Model.ExceptionMessage
+</div>
+
+We will do our best to solve this issue.
