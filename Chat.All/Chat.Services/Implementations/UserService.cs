@@ -60,5 +60,12 @@ namespace Chat.Services.Implementations
 
             return _mapper.Map<UserDto>(userEntity);
         }
+
+        public bool CanCrateUser(string email)
+        {
+            var userEntity = _userRepository.GetUserByEmail(email);
+
+            return userEntity == null;
+        }
     }
 }

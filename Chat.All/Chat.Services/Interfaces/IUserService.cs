@@ -8,5 +8,6 @@ namespace Chat.Services.Interfaces
         int RegisterUser(RegisterUserModel userModel);
         bool ValidateUser(string email, string password);
         UserDto GetUserByEmail(string email);
+        bool CanCrateUser(string email);
     }
 }

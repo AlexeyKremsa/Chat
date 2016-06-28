@@ -100,6 +100,12 @@ namespace Chat.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(!UserService.CanCrateUser(model.Email))
+                {
+                   ModelState.AddModelError("", "User with such an email already exists. Please, choose another one.");
+                   return View(model);
+                }
+
                 UserService.RegisterUser(model);
 
                 var user = new ApplicationUser()
