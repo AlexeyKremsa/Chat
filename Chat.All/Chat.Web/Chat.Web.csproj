@@ -204,8 +204,6 @@
     <Compile Include="Infrastructure\BaseController.cs" />
     <Compile Include="Infrastructure\SignalR\ChatHub.cs" />
     <Compile Include="Infrastructure\SignalR\IChatPermission.cs" />
-    <Compile Include="Infrastructure\SignalR\MessageDetail.cs" />
-    <Compile Include="Infrastructure\SignalR\UserDetail.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -213,10 +211,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="MapperProfiles\ServiceProfile.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

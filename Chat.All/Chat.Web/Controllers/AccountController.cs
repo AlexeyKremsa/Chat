@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Chat.Infrastructure.AccountViewModels;
 using Chat.Infrastructure.ViewModels;
 using Chat.Web.Infrastructure;
 using Microsoft.AspNet.Identity;

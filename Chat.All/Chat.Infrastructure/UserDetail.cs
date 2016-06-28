@@ -1,4 +1,4 @@
-﻿namespace Chat.Web.Infrastructure.SignalR
+﻿namespace Chat.Infrastructure
 {
     public class UserDetail
     {
