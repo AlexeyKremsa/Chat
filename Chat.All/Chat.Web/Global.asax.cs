@@ -20,7 +20,6 @@ namespace Chat.Web
             FilterConfig.RegisterGlobalFilters(log, GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            UnityWebActivator.Start();
         }
 
         protected void Application_Error(object sender, EventArgs e)

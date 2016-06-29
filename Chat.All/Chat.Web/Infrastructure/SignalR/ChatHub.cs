@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Chat.Infrastructure;
+using Chat.Infrastructure.Chat;
 using Microsoft.AspNet.SignalR;
 
 namespace Chat.Web.Infrastructure.SignalR
@@ -14,21 +14,6 @@ namespace Chat.Web.Infrastructure.SignalR
         public void Connect(string userName)
         {
             string id = Context.ConnectionId;
-
-            //var user = ConnectedUsers.FirstOrDefault(x => x.UserName == userName);
-
-            //if (user == null)
-            //{
-            //    id = Context.ConnectionId;
-            //}
-            //else
-            //{
-            //    id = user.ConnectionId;
-
-            //    // send to caller
-            //    Clients.Caller.onConnected(id, userName, ConnectedUsers, CurrentMessage);
-            //    return;
-            //}
 
             if (ConnectedUsers.All(x => x.ConnectionId != id))
             {

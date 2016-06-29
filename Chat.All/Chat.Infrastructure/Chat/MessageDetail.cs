@@ -1,4 +1,4 @@
-﻿namespace Chat.Infrastructure
+﻿namespace Chat.Infrastructure.Chat
 {
     public class MessageDetail
     {

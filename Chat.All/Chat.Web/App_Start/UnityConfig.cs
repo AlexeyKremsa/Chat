@@ -8,7 +8,6 @@ using Chat.Domain.Repositories.Interfaces;
 using Chat.Services.Implementations;
 using Chat.Services.Interfaces;
 using Chat.Services.Security;
-using Chat.Web.Infrastructure.SignalR;
 using Chat.Web.Models;
 using log4net;
 using Microsoft.AspNet.Identity;
@@ -44,11 +43,11 @@ namespace Chat.Web
 
         private static void RegisterIdentityClasses(IUnityContainer container)
         {
-            container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
-            container.RegisterType<ApplicationUserManager>();
-            container.RegisterType<ApplicationSignInManager>();
+            container.RegisterType<DbContext, ApplicationDbContext>(new PerRequestLifetimeManager());
+            container.RegisterType<ApplicationUserManager>(new PerRequestLifetimeManager());
+            container.RegisterType<ApplicationSignInManager>(new PerRequestLifetimeManager());
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
-            container.RegisterType<IUserStore<ApplicationUser>, ApplicationUserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUserStore<ApplicationUser>, ApplicationUserStore<ApplicationUser>>(new PerRequestLifetimeManager());
         }
 
         private static void RegisterService(IUnityContainer container)

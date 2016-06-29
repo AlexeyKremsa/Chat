@@ -1,7 +1,5 @@
-﻿using Microsoft.Owin;
-using Owin;
+﻿using Owin;
 
-//[assembly: OwinStartup(typeof(SignalRChat.Startup))]
 namespace Chat.Web
 {
     public partial class Startup

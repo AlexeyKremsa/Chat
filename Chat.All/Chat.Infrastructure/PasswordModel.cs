@@ -1,4 +1,4 @@
-﻿namespace Chat.Services.Security
+﻿namespace Chat.Infrastructure
 {
     public class PasswordModel
     {

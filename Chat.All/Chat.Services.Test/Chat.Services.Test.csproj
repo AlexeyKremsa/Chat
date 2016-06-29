@@ -82,9 +82,9 @@
       <Project>{C2462388-1F3A-4D29-9D44-44DF5253C133}</Project>
       <Name>Chat.EntityModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chat.Infrastructure\Chat.Infrastructure.csproj">
+    <ProjectReference Include="..\Chat.Infrastructure\Chat.Models.csproj">
       <Project>{A14497C5-851D-4EA1-ACC0-B558C17C1B37}</Project>
-      <Name>Chat.Infrastructure</Name>
+      <Name>Chat.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chat.Services\Chat.Services.csproj">
       <Project>{502001B9-07FB-459A-92A1-C8B5067694DD}</Project>

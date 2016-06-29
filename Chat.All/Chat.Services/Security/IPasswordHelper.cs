@@ -1,4 +1,5 @@
 ﻿using Chat.EntityModel;
+using Chat.Infrastructure;
 
 namespace Chat.Services.Security
 {

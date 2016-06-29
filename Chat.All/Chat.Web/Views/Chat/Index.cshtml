@@ -208,8 +208,9 @@
 
             $(".users-list").on('click', '.send-private-msg', function () {
 
-                var id = $(this).attr('id');
-                var userName = $(this).text();
+                var $self = $(this);
+                var id = $self.attr('id');
+                var userName = $self.text();
 
                 OpenPrivateChatWindow(chatHub, id, userName);
             });
@@ -266,7 +267,7 @@
                     });
 
                     $('.btn-send-private').on('click', function () {
-                        var $input = $(this).parent().parent().children('input');
+                        var $input = $(this).closest('.input-group').children('input');
                         var msg = $input.val();
 
                         if (msg.length > 0) {

@@ -2,6 +2,7 @@
 using AutoMapper;
 using Chat.Domain.Repositories.Interfaces;
 using Chat.EntityModel;
+using Chat.Infrastructure;
 using Chat.Infrastructure.Dto;
 using Chat.Infrastructure.ViewModels;
 using Chat.Services.Implementations;
