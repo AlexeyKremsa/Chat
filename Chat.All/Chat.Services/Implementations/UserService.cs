@@ -18,6 +18,7 @@ namespace Chat.Services.Implementations
             IPasswordHelper passwordHelper,
             IUserRepository userRepository)
         {
+            ThrowIfNull(mapper);
             ThrowIfNull(passwordHelper);
             ThrowIfNull(userRepository);
 
@@ -37,7 +38,7 @@ namespace Chat.Services.Implementations
                 Email = userModel.Email,
                 FirstName = userModel.FirstName,
                 LastName = userModel.LastName,
-                PasswordHash = password.PasswordsHash,
+                PasswordHash = password.PasswordHash,
                 PasswordSalt = password.PasswordSalt
             };
 

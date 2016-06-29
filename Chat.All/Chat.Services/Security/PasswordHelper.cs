@@ -16,7 +16,7 @@ namespace Chat.Services.Security
 
             return new PasswordModel()
             {
-                PasswordsHash = cryptoService.Compute(password),
+                PasswordHash = cryptoService.Compute(password),
                 PasswordSalt = cryptoService.Salt
             };
         }

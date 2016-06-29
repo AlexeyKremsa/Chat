@@ -98,12 +98,18 @@ namespace Chat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterUserModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model != null)
             {
                 if(!UserService.CanCrateUser(model.Email))
                 {
                    ModelState.AddModelError("", "User with such an email already exists. Please, choose another one.");
                    return View(model);
+                }
+
+                if (model.Password != model.ConfirmPassword)
+                {
+                    ModelState.AddModelError("", "Password and ConfirmPassword fields are not equal.");
+                    return View(model); 
                 }
 
                 UserService.RegisterUser(model);

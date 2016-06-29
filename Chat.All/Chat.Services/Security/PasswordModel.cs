@@ -2,7 +2,7 @@
 {
     public class PasswordModel
     {
-        public string PasswordsHash { get; set; }
+        public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
     }
 }
