@@ -28,6 +28,8 @@ namespace Chat.Services.Implementations
 
         public int RegisterUser(RegisterUserModel userModel)
         {
+            ThrowIfNull(userModel);
+
             var password = _passwordHelper.HashPassword(userModel.Password);
 
             var newUser = new User()
@@ -44,6 +46,9 @@ namespace Chat.Services.Implementations
 
         public bool ValidateUser(string email, string password)
         {
+            ThrowIfNull(email);
+            ThrowIfNull(password);
+
             var user = _userRepository.GetUserByEmail(email);
 
             if (user != null)
@@ -56,6 +61,8 @@ namespace Chat.Services.Implementations
 
         public UserDto GetUserByEmail(string email)
         {
+            ThrowIfNull(email);
+
             var userEntity = _userRepository.GetUserByEmail(email);
 
             return _mapper.Map<UserDto>(userEntity);
@@ -63,6 +70,8 @@ namespace Chat.Services.Implementations
 
         public bool CanCrateUser(string email)
         {
+            ThrowIfNull(email);
+
             var userEntity = _userRepository.GetUserByEmail(email);
 
             return userEntity == null;
