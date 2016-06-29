@@ -6,21 +6,29 @@ using Microsoft.AspNet.SignalR;
 
 namespace Chat.Web.Infrastructure.SignalR
 {
-    public class ChatHub : Hub, IChatPermission
+    public class ChatHub : Hub
     {
         private static List<UserDetail> ConnectedUsers = new List<UserDetail>();
         private static List<MessageDetail> CurrentMessage = new List<MessageDetail>();
 
-        public bool CanUserJoinChat(string userName)
-        {
-            var user = ConnectedUsers.FirstOrDefault(x => x.UserName == userName);
-
-            return user == null;
-        }
-
         public void Connect(string userName)
         {
-            var id = Context.ConnectionId;
+            string id = Context.ConnectionId;
+
+            //var user = ConnectedUsers.FirstOrDefault(x => x.UserName == userName);
+
+            //if (user == null)
+            //{
+            //    id = Context.ConnectionId;
+            //}
+            //else
+            //{
+            //    id = user.ConnectionId;
+
+            //    // send to caller
+            //    Clients.Caller.onConnected(id, userName, ConnectedUsers, CurrentMessage);
+            //    return;
+            //}
 
             if (ConnectedUsers.All(x => x.ConnectionId != id))
             {

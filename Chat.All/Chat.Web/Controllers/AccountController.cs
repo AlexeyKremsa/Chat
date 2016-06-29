@@ -53,9 +53,9 @@ namespace Chat.Web.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login()
         {
-            ViewBag.ReturnUrl = returnUrl;
+            //ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -75,7 +75,7 @@ namespace Chat.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Chat");
 
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -121,7 +121,7 @@ namespace Chat.Web.Controllers
 
                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Chat");
             }
 
             return View(model);
@@ -134,7 +134,7 @@ namespace Chat.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         protected override void Dispose(bool disposing)

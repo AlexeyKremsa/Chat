@@ -15,7 +15,7 @@
     <AssemblyName>Chat.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -209,7 +209,6 @@
     <Compile Include="CustomExceptions\CustomErrorHandler.cs" />
     <Compile Include="Infrastructure\BaseController.cs" />
     <Compile Include="Infrastructure\SignalR\ChatHub.cs" />
-    <Compile Include="Infrastructure\SignalR\IChatPermission.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -298,7 +297,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
@@ -309,7 +307,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Home\Account\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -354,7 +351,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58111</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Chat.Web</IISUrl>
+          <IISUrl>http://localhost:58111/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

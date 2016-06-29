@@ -5,11 +5,7 @@ namespace Chat.Web.Controllers
 {
     public class HomeController : BaseController
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+        [AllowAnonymous]
         public ActionResult About()
         {
             return View();

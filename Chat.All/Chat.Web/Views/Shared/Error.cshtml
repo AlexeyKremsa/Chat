@@ -12,12 +12,16 @@
 
 An error occured :(
 
+@if(Model != null)
+{
 <div class="custom-errors">
     Controller: @Model.ControllerName
-    <br/>
+    <br />
     Action: @Model.ActionName
     <br />
     Error: @Model.ExceptionMessage
 </div>
+}
+
 
 We will do our best to solve this issue.

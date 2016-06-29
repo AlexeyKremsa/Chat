@@ -83,7 +83,6 @@ namespace Chat.Web
             container.RegisterInstance(config);
             container.RegisterInstance(config.CreateMapper());
 
-            container.RegisterType<IChatPermission, ChatHub>();
             container.RegisterInstance<ILog>(LogManager.GetLogger("ChatLogger"));
         }
     }
